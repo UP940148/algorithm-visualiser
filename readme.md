@@ -1,3 +1,7 @@
 # Algorithm Visualiser
 
-[Sorts](./sorts/)
+[Sorting Algorithms](./sorts/)
+
+## Coming Soon
+
+[Shortest Path Algorithms](./)
