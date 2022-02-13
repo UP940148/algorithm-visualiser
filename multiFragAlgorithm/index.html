@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang=en>
+
+    <head>
+        <title>Path-finding Algorithms</title>
+        <link rel=stylesheet href=default.css>
+        <script async defer src=index.js></script>
+    </head>
+
+    <body>
+        <div id=topContainer>
+            <div id=canvContainer>
+                <label>Graph:</label>
+                <div>
+                    <canvas id=mainView height=800 width=800></canvas>
+                </div>
+            </div>
+            <div id=fragListContainer>
+                <label>Fragments:</label>
+                <div id=fragList></div>
+                <div id=fragSize>Largest fragment size: --</div>
+            </div>
+            <div id=edgeListContainer>
+                <label>Edges:</label>
+                <div id=edgeList></div>
+                <div id=edgeCount>Checked: --</div>
+            </div>
+        </div>
+        <div id=controlBar>
+            <input type=number id=nodeCount placeholder="Node count" value=5></input>
+            <button id=newGraph title="Create new graph">Create new graph</button>
+            <input type=checkbox id=showEdges checked>Show Edges</input><br>
+            <button id=mfButton title="Run Multi-Fragment Algorithm">Run algorithm</button>
+
+        </div>
+    </body>
+
+</html>
