@@ -1,38 +1,24 @@
 <!DOCTYPE html>
-<html lang=en>
+<head>
+  <title>Path-finding Algorithms</title>
+  <link rel=stylesheet href=default.css>
+</head>
 
-    <head>
-        <title>Path-finding Algorithms</title>
-        <link rel=stylesheet href=default.css>
-        <script async defer src=index.js></script>
-    </head>
+<body>
+  <span>This page is currently being used as an assistive artefact for a piece of coursework.<br>Because of this, some features, including the ability to create a random distribution of nodes, have been disabled. Apologies for any inconvenience.</span>
+  <br>
+  <canvas id=mainView height=900 width=900></canvas>
+  <br>
+  <select id=config>
+    <option value=25>25 Nodes</option>
+    <option value=50>50 Nodes</option>
+    <option value=100>100 Nodes</option>
+  </select>
+  <button id=execMF>Execute MF</button>
+  <button id=execNN>Execute NN</button>
+  <button id=execDENN>Execute DENN</button>
+  <br>
+  <button id=improv1>Improve Tour (Alg1)</button>
+</body>
 
-    <body>
-        <div id=topContainer>
-            <div id=canvContainer>
-                <label>Graph:</label>
-                <div>
-                    <canvas id=mainView height=800 width=800></canvas>
-                </div>
-            </div>
-            <div id=fragListContainer>
-                <label>Fragments:</label>
-                <div id=fragList></div>
-                <div id=fragSize>Largest fragment size: --</div>
-            </div>
-            <div id=edgeListContainer>
-                <label>Edges:</label>
-                <div id=edgeList></div>
-                <div id=edgeCount>Checked: --</div>
-            </div>
-        </div>
-        <div id=controlBar>
-            <input type=number id=nodeCount placeholder="Node count" value=5></input>
-            <button id=newGraph title="Create new graph">Create new graph</button>
-            <input type=checkbox id=showEdges checked>Show Edges</input><br>
-            <button id=mfButton title="Run Multi-Fragment Algorithm">Run algorithm</button>
-
-        </div>
-    </body>
-
-</html>
+<script type=module src=v2.js></script>

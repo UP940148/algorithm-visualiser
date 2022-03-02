@@ -3,6 +3,10 @@ let EDGES = [];
 let FRAGMENTS = [];
 let TOUR = undefined;
 let EDGECOUNT = 0;
+let TOTALWEIGHT = 0;
+let AVGWEIGHT = 0;
+let TOURWEIGHT = 0;
+let TOURAVGWEIGHT = 0;
 const CANV = document.getElementById('mainView');
 
 // https://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep
@@ -248,12 +252,12 @@ class Node {
         c.font = '16px arial';
         c.fillStyle = '#000';
         c.beginPath();
-        c.arc(this.x, this.y, 11, 0, 2 * Math.PI);
+        c.arc(this.x, this.y, 3, 0, 2 * Math.PI);
         c.fill();
         c.fillStyle = '#fff';
         c.textAlign = 'center';
         c.beginPath();
-        c.fillText(this.getID(), this.x, this.y+5);
+        //c.fillText(this.getID(), this.x, this.y+5);
         c.fill();
     }
 }
@@ -299,13 +303,13 @@ function newNode(x, y) {
         let x, y;
         let near = true;
         while (near) {
-            x = Math.round(Math.random()*700 + 50);
-            y = Math.round(Math.random()*700 + 50);
+            x = Math.round(Math.random()*750 + 25);
+            y = Math.round(Math.random()*750 + 25);
             near = false;
             for (let i = 0; i < NODES.length; i++) {
                 let nodeX = NODES[i].x;
                 let nodeY = NODES[i].y;
-                if (distBetween(x, y, nodeX, nodeY) < 30) {
+                if (distBetween(x, y, nodeX, nodeY) < 15) {
                     near = true;
                 }
             }
@@ -374,7 +378,7 @@ function clearCanv() {
 }
 
 async function createGraph(n = 10) {
-    if (n > 100) {n = 100}
+    if (n > 1000) {n = 1000}
     NODES = [];
     EDGES = [];
     FRAGMENTS = [];
@@ -390,9 +394,12 @@ async function createGraph(n = 10) {
     getAllEdges();
     EDGECOUNT = EDGES.length;
     drawGraph();
+    // Display weight info
+    document.getElementById('weight').innerText = `\nTotal Weight: ${TOTALWEIGHT.toFixed(2)}, Average Edge Weight: ${AVGWEIGHT.toFixed(2)}`;
 }
 
 async function getAllEdges() {
+    TOTALWEIGHT = 0;
     EDGES = [];
     for (let i = 0; i < NODES.length; i++) {
         for (let j = i+1; j < NODES.length; j++) {
@@ -400,15 +407,31 @@ async function getAllEdges() {
         }
     }
     EDGES.sort(edgeSort);
+
+    // Get weights
+    for (let i = 0; i < EDGES.length; i++) {
+        TOTALWEIGHT += EDGES[i].weight;
+    }
+    AVGWEIGHT = TOTALWEIGHT / EDGES.length;
+
 }
 
 function finalFrag(fragment) {
+    TOURWEIGHT = 0;
     TOUR = fragment;
     drawGraph();
     fragment.drawSelf('#0f0');
     NODES.forEach(node => {
         node.showSelf();
     })
+
+    // Get tour weight
+    for (let i = 0; i < fragment.edges.length; i++) {
+        TOURWEIGHT += fragment.edges[i].weight;
+    }
+    TOURAVGWEIGHT = TOURWEIGHT / fragment.edges.length;
+
+    document.getElementById('weight').innerText = `\nTotal Weight: ${TOTALWEIGHT.toFixed(2)}, Average Edge Weight: ${AVGWEIGHT.toFixed(2)}\n\nTour Weight: ${TOURWEIGHT.toFixed(2)}, Tour Average Weight: ${TOURAVGWEIGHT.toFixed(2)}`;
 }
 
 async function multiFragAlg() {
@@ -432,10 +455,10 @@ async function multiFragAlg() {
 
     mainLoop:
     while (EDGES.length > 0) {
-        await pause(100);
+        //await pause(100);
         const edge = EDGES.shift();
-        await drawGraph();
-        await edge.drawSelf('#f00');
+        //await drawGraph();
+        //await edge.drawSelf('#f00');
         // Rule 1
         for (let f = 0; f < FRAGMENTS.length; f++) {
             const containsA = FRAGMENTS[f].contains(edge.nodeA);
