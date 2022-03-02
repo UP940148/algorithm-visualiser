@@ -2,7 +2,7 @@
 
 [Sorting Algorithms](./sorts/)
 
-[Multi-Fragment Heuristic for the Travelling Salesman Problem](./multiFragAlgorithm/)\
+[Heuristics for the Travelling Salesman Problem](./tspAlgorithms/)\
 (Best viewed at 1920x1080 or above)
 
 ## Coming Soon
