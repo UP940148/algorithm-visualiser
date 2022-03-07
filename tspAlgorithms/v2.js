@@ -83,7 +83,11 @@ function makeDistMatrix() {
   for (let i = 0; i < NODES.length; i++) {
     const row = [];
     for (let j = 0; j < NODES.length; j++) {
-      row.push(distBetween(NODES[i], NODES[j]));
+      if (i === j) {
+        row.push(Infinity);
+      } else {
+        row.push(distBetween(NODES[i], NODES[j]));
+      }
     }
     DISTMAT.push(row);
   }
