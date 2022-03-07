@@ -16,7 +16,7 @@ Fragment Structure:
 [node1, node2, node3, ..., nodeN]
 */
 
-
+let RESULTS;
 let NODES = [];
 let EDGES = [];
 let FRAGS = [];
@@ -257,7 +257,7 @@ function neighbourImprove() {
   }
 }
 
-
+/*
 document.getElementById('init').addEventListener('click', () => {
   const n = parseInt(document.getElementById('nCount').value);
   initRandWeightMatrix(n);
@@ -299,14 +299,21 @@ document.getElementById('opt1').addEventListener('click', async () => {
   console.log('-------------------------------------------------------------');
   console.log(`Avg improvement: ${improv.toFixed(3)}% over ${iters} iterations`);
 });
+*/
+
+document.getElementById('progOpt1').addEventListener('click', async () => {
+  await runProgressive(neighbourImprove);
+});
 
 async function runProgressive(alg) {
+  document.getElementById('progressSection').style.display = 'block';
   const results = [];
   const low = 4;
   const high = 100;
 
   for (let n = low; n <= high; n++) {
-    console.log(n);
+    await updateProgress(n);
+    await pause(1);
     const iters = document.getElementById('iters').value;
     let totalInit = 0;
     let totalEnd = 0;
@@ -325,5 +332,53 @@ async function runProgressive(alg) {
     results.push([n, improv]);
   }
 
-  console.log(results);
+  document.getElementById('progressSection').style.display = 'none';
+
+  displayResults(results);
+  RESULTS = results;
 }
+
+function updateProgress(n) {
+  document.getElementById('progVal').textContent = n;
+  document.getElementById('progBar').value = n;
+}
+
+// https://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep
+function pause(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function displayResults(results) {
+  const mainContainer = document.getElementById('resultSection');
+  mainContainer.innerHTML = '';
+
+  for (let i = 0; i < results.length; i++) {
+    // Create result container
+    const thisContainer = document.createElement('div');
+    thisContainer.classList.add('result');
+    mainContainer.appendChild(thisContainer);
+    const nodeNum = document.createElement('p');
+    nodeNum.classList.add('n-value');
+    nodeNum.textContent = results[i][0];
+    thisContainer.appendChild(nodeNum);
+    const improvPercent = document.createElement('p');
+    improvPercent.textContent = `${results[i][1].toFixed(2)}%`;
+    thisContainer.appendChild(improvPercent);
+  }
+  document.getElementById('exportResults').style.display = 'block';
+}
+
+function exportResults() {
+  let data = 'data:text/csv;charset=utf-8,';
+  RESULTS.forEach(row => {
+    const strRow = row.join(',');
+    data += strRow + '\r\n';
+  });
+  const encodedURI = encodeURI(data);
+  const link = document.createElement('a');
+  link.download = 'data_Eng-Sci.csv';
+  link.href = encodedURI;
+  link.click();
+}
+
+document.getElementById('exportResults').addEventListener('click', exportResults);

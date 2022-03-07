@@ -1,3 +1,11 @@
+body {
+  font-family: arial, helvetica, sans-serif;
+}
+
+i {
+  font-family: serif;
+}
+
 canvas {
     background-color: #eee;
     border: 1px solid #aaa;
@@ -22,4 +30,40 @@ canvas {
     flex-grow: 2;
     padding: 1% 2%;
     overflow-y: scroll;
+}
+
+h2 {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+#resultSection {
+  column-count: 2;
+  column-rule: 1px solid black;
+}
+
+@media (min-width: 830px) {
+#resultSection {
+  column-count: 5;
+}
+}
+
+@media (min-width: 1620px) {
+#resultSection {
+  column-count: 10;
+}
+}
+
+.result {
+  column-count: 2;
+  column-rule: 1px solid grey;
+}
+
+.result > p {
+  margin: 0;
+}
+
+.n-value {
+  font-weight: bolder;
+  text-align: right;
 }

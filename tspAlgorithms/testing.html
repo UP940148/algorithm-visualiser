@@ -8,12 +8,34 @@
   <span>This page is currently being used as an assistive artefact for a piece of coursework.<br>Because of this, some features, including the ability to create a random distribution of nodes, have been disabled. Apologies for any inconvenience.</span>
 
   <br><br><br>
+  <!--
   <div>
     <input type=number id=nCount value=50></input>
     <input type=button id=init value=Initialise></input><br><br>
     <input type=number id=iters value=10000></input>
     <input type=button id=MF value="Run MF"></input><br>
     <input type=button id=opt1 value="Run alg 1"></input>
+  </div>
+  -->
+  <div>
+    <h2>Get improvement % for all <i>n</i> sized graphs, over <i>x</i> iterations per graph</h2>
+    <p style="margin-top: 0;">(Where <i>n</i> ranges from 4-100, inclusive)</p><br>
+    <label>Iteration count (<i>x</i>):</label>
+    <input type=number id=iters value=100></input><br><br>
+    <fieldset>
+      <legend>Chosen optimisation algorithm:</legend>
+      <input type=button id=progOpt1 value="Run alg 1"></input>
+    </fieldset>
+    <br>
+    <fieldset>
+      <legend>Results:</legend>
+      <div id=progressSection style="display: none;">
+        <progress id=progBar max=100 value=0></progress>
+        <label id=progLab><i>n</i> = <span id=progVal>??</span></label>
+      </div>
+      <input type=button id=exportResults value="Download results as .csv" style="display: none;"></input><br>
+      <div id=resultSection></div>
+    </fieldset>
   </div>
 </body>
 
