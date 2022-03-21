@@ -51,7 +51,9 @@ function initRandWeightMatrix(n = 50) {
 
 function getEdges() {
   EDGES = [];
+  NODES = [];
   for (let i = 0; i < DISTMAT.length; i++) {
+    NODES.push(i);
     for (let j = i + 1; j < DISTMAT.length; j++) {
       EDGES.push({ a: i, b: j });
     }
@@ -228,6 +230,55 @@ function getFragWeight(frag) {
   return total;
 }
 
+function nearestNeighbour() {
+  // Start is arbitrary, begin at 0
+  TOUR = [0];
+
+  // Loop until full tour created
+  while (TOUR.length !== NODES.length) {
+    const tail = TOUR[0];
+    const next = getClosest(tail, TOUR);
+    TOUR.unshift(next);
+  }
+
+  FRAGS = [TOUR];
+}
+
+function doubleEndedNN() {
+  TOUR = [0];
+  let front = true;
+  while (TOUR.length !== NODES.length) {
+    if (front) {
+      const next = getClosest(TOUR[0], TOUR);
+      TOUR.unshift(next);
+      front = false;
+      continue;
+    }
+    const tail = TOUR[TOUR.length - 1];
+    const next = getClosest(tail, TOUR);
+    TOUR.push(next);
+    front = true;
+  }
+
+  FRAGS = [TOUR];
+}
+
+function getClosest(n, exclude) {
+  let closest;
+  let bestDist = Infinity;
+  for (let i = 0; i < NODES.length; i++) {
+    if (exclude.includes(i)) {
+      continue;
+    }
+    const thisDist = DISTMAT[NODES[n]][NODES[i]];
+    if (thisDist < bestDist) {
+      bestDist = thisDist;
+      closest = i;
+    }
+  }
+  return closest;
+}
+
 /* IMPROVEMENT ALGORITHMS */
 function neighbourImprove() {
   // Get best weight
@@ -257,79 +308,58 @@ function neighbourImprove() {
   }
 }
 
-/*
-document.getElementById('init').addEventListener('click', () => {
-  const n = parseInt(document.getElementById('nCount').value);
-  initRandWeightMatrix(n);
-});
 
-document.getElementById('MF').addEventListener('click', async () => {
-  const n = document.getElementById('nCount').value;
-  const iters = document.getElementById('iters').value;
-  let total = 0;
-  for (let i = 0; i < iters; i++) {
-    initRandWeightMatrix(n);
-    getEdges();
-    await multiFrag();
-    const weight = getFragWeight(FRAGS[0]);
-    total += weight;
+document.getElementById('runAlgs').addEventListener('click', async () => {
+  let alg1, alg2;
+  switch (document.querySelector('input[name="alg1"]:checked').value) {
+    case 'mfAlg':
+      alg1 = multiFrag;
+      break;
+
+    case 'nnAlg':
+      alg1 = nearestNeighbour;
+      break;
+
+    case 'dennAlg':
+      alg1 = doubleEndedNN;
+      break;
   }
-  console.log(`Avg: ${total / iters}`);
-});
-
-document.getElementById('opt1').addEventListener('click', async () => {
-  const n = document.getElementById('nCount').value;
-  const iters = document.getElementById('iters').value;
-  let totalInit = 0;
-  let totalEnd = 0;
-  for (let i = 0; i < iters; i++) {
-    initRandWeightMatrix(n);
-    getEdges();
-    await multiFrag();
-    TOUR = FRAGS[0];
-    const initWeight = getFragWeight(TOUR);
-    totalInit += initWeight;
-    await neighbourImprove();
-    const endWeight = getFragWeight(TOUR);
-    totalEnd += endWeight;
+  switch (document.querySelector('input[name="alg2"]:checked').value) {
+    case 'neighbourSwap':
+      alg2 = neighbourImprove;
+      break;
   }
-  const improv = ((totalInit - totalEnd) / totalInit) * 100;
-  totalInit = totalInit / iters;
-  totalEnd = totalEnd / iters;
-  console.log('-------------------------------------------------------------');
-  console.log(`Avg improvement: ${improv.toFixed(3)}% over ${iters} iterations`);
-});
-*/
-
-document.getElementById('progOpt1').addEventListener('click', async () => {
-  await runProgressive(neighbourImprove);
+  await runProgressive(alg1, alg2);
 });
 
-async function runProgressive(alg) {
+async function runProgressive(alg1, alg2) {
   document.getElementById('progressSection').style.display = 'block';
+  const iters = document.getElementById('iters').value;
   const results = [];
   const low = 4;
   const high = 100;
-
-  for (let n = low; n <= high; n++) {
+  let n = low;
+  while (n <= high) {
     await updateProgress(n);
     await pause(1);
-    const iters = document.getElementById('iters').value;
     let totalInit = 0;
     let totalEnd = 0;
-    for (let i = 0; i < iters; i++) {
+    let i = 0;
+    while (i < iters) {
       initRandWeightMatrix(n);
       getEdges();
-      await multiFrag();
+      await alg1();
       TOUR = FRAGS[0];
       const initWeight = getFragWeight(TOUR);
       totalInit += initWeight;
-      await alg();
+      await alg2();
       const endWeight = getFragWeight(TOUR);
       totalEnd += endWeight;
+      i++;
     }
     const improv = ((totalInit - totalEnd) / totalInit) * 100;
     results.push([n, improv]);
+    n++;
   }
 
   document.getElementById('progressSection').style.display = 'none';

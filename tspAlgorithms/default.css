@@ -67,3 +67,21 @@ h2 {
   font-weight: bolder;
   text-align: right;
 }
+
+#algFieldset {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+#algFieldset > #alg1 {
+  padding-left: 1vw;
+  padding-right: 1vw;
+  border-right: 1px solid black;
+}
+
+#algFieldset > #alg2 {
+  padding-left: 1vw;
+  padding-right: 1vw;
+  border-left: 1px solid black;
+}

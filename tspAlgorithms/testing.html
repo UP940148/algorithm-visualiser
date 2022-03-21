@@ -8,24 +8,32 @@
   <span>This page is currently being used as an assistive artefact for a piece of coursework.<br>Because of this, some features, including the ability to create a random distribution of nodes, have been disabled. Apologies for any inconvenience.</span>
 
   <br><br><br>
-  <!--
-  <div>
-    <input type=number id=nCount value=50></input>
-    <input type=button id=init value=Initialise></input><br><br>
-    <input type=number id=iters value=10000></input>
-    <input type=button id=MF value="Run MF"></input><br>
-    <input type=button id=opt1 value="Run alg 1"></input>
-  </div>
-  -->
+
   <div>
     <h2>Get improvement % for all <i>n</i> sized graphs, over <i>x</i> iterations per graph</h2>
     <p style="margin-top: 0;">(Where <i>n</i> ranges from 4-100, inclusive)</p><br>
     <label>Iteration count (<i>x</i>):</label>
     <input type=number id=iters value=100></input><br><br>
-    <fieldset>
-      <legend>Chosen optimisation algorithm:</legend>
-      <input type=button id=progOpt1 value="Run alg 1"></input>
+    <fieldset id=algFieldset>
+      <legend>Chosen algorithms:</legend>
+      <div id="alg1">
+        <input type="radio" id="mfAlg" value="mfAlg" name="alg1" checked></input>
+        <label for="mfAlg">Multiple-Fragment</label>
+        <br>
+        <input type="radio" id="nnAlg" value="nnAlg" name="alg1"></input>
+        <label for="nnAlg">Nearest Neighbour</label>
+        <br>
+        <input type="radio" id="dennAlg" value="dennAlg" name="alg1"></input>
+        <label for="dennAlg">Double-Ended Nearest Neighbour</label>
+      </div>
+      <div id="alg2">
+        <input type=radio id=neighbourSwap value="neighbourSwap" name="alg2" checked></input>
+        <label for="neighbourSwap">Neighbour Swapping</label>
+      </div>
     </fieldset>
+    <br>
+    <input type="button" id="runAlgs" value="Run Algorithms"></input>
+    <br>
     <br>
     <fieldset>
       <legend>Results:</legend>
