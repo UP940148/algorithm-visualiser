@@ -18,8 +18,8 @@
   },
   "homepage": "https://github.com/UP940148/algorithm-visualiser#readme",
   "devDependencies": {
-    "eslint": "^7.23.0",
-    "eslint-config-portsoc": "^0.8.1",
+    "eslint": "^8.11.0",
+    "eslint-config-portsoc": "^1.0.0",
     "jsdoc": "^3.6.10"
   },
   "eslintConfig": {
